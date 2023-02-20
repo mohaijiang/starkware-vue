@@ -6,7 +6,18 @@
     </div>
     <button @click="l2Connect">connect</button>
     <button @click="handlerAddress">Get Address</button>
+    <button @click="declare">Declare</button>
     <button @click="deployContract">Deploy Contract</button>
+
+    <div>
+      <h2>
+        <label>contract address: {{contract_address}} </label>
+      </h2>
+      <div>
+        <button @click="executeGet">get_balance</button>
+        <button @click="executeSet">increase_balance</button>
+      </div>
+    </div>
 </template>
 
 <script  setup >
@@ -14,13 +25,16 @@ import { useStore, mapActions} from 'vuex'
 import { connect, getStarknet } from "@argent/get-starknet"
 
 
-import compiledContract from '../constracts/contract_compiled.json'
+import compiledContract from '../constracts/ERC20.cairo.starknet.output.json'
 import {onMounted, ref} from "vue";
+import {stark,number} from "starknet";
 
 const wallet = ref({})
+const contract = ref({})
+const contract_address = ref('0x72e5a285631a6b94afc0f78ce3161c884516e8204daecc05a423f1088076470')
 
 // contract_compiled.json classHash
-const classHash = "0x399998c787e0a063c3ac1d2abac084dcbe09954e3b156d53a8c43a02aa27d35"
+const classHash = "0x0399998c787e0a063c3ac1d2abac084dcbe09954e3b156d53a8c43a02aa27d35"
 
 const store = useStore();
 
@@ -55,24 +69,47 @@ const deployContract = async () => {
   })
   console.log(response.transaction_hash)
   console.log(response.contract_address)
-  // const provider = new Provider({
-  //   sequencer: {
-  //     baseUrl: 'https://alpha4.starknet.io',
-  //     feederGatewayUrl: 'feeder_gateway',
-  //     gatewayUrl: 'gateway',
-  //   }
-  // })
-  //
-  // const activeAccount = "0x215e3d4c42b32b05429902adf90137fe3ca62056ea51a8d026165bf140f9fa2"
-  // //TODO... Here use keypair with ec and privateKey . How Can I get keypair from wallet ?
-  // const account = new Account(provider,activeAccount,starkKeyPair)
-  // account.declare({
-  //   classHash: classHash,
-  //   contract: compiledContractObj
-  // }).then(resp => {
-  //   console.log(resp.transaction_hash)
-  // })
+
+  const receiptResponsePromise = await wallet.value.account.waitForTransaction(response.transaction_hash,undefined, ['ACCEPTED_ON_L2'])
+  if (receiptResponsePromise.status === 'ACCEPTED_ON_L2') {
+    contract_address.value = response.contract_address[0]
+  }
 }
+
+const executeGet = async ()=> {
+
+  const callResp = await wallet.value.account.callContract({
+    contractAddress: contract_address.value,
+    calldata: stark.compileCalldata({
+    }),
+    entrypoint: 'get_balance',
+  })
+  const firstReturnData = callResp.result[0]
+  console.log(number.toFelt( firstReturnData))
+
+}
+
+const executeSet = async () => {
+  const invokeResponse = await wallet.value.account.execute({
+    contractAddress: contract_address.value,
+    entrypoint: 'increase_balance',
+    calldata: stark.compileCalldata({
+      amount: '10'
+    })
+  })
+
+  console.log(invokeResponse.transaction_hash)
+}
+
+const declare = async () => {
+  const resp = await wallet.value.account.declare({
+    contract: ``,
+    classHash: classHash,
+  })
+
+  console.log(resp.transaction_hash)
+}
+
 //
 onMounted(()=>{
   connectWallet().then(data => {
