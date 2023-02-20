@@ -6,12 +6,17 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore -f json"
   },
   "dependencies": {
+    "@argent/get-starknet": "^5.2.0",
     "core-js": "^3.6.5",
-    "vue": "^3.0.0"
+    "get-starknet": "^2.0.0",
+    "starknet": "^4.17.1",
+    "vue": "^3.0.0",
+    "vuex": "^4.0.2",
+    "webpack": "^5.75.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
     "@vue/compiler-sfc": "^3.0.0",
     "eslint": "^8.33.0",
     "eslint-plugin-vue": "^9.9.0"
