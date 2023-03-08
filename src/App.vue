@@ -1,18 +1,24 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
 <!--  <HelloWorld msg="Welcome to Your Vue.js App"/>-->
-  <StartWare />
+<!--  <StartWare />-->
+<!--  <Ether/>-->
+    <Aptos/>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
-import StartWare from "@/components/StartWare";
+// import StartWare from "@/components/StartWare";
+// import Ether from "@/components/Ether"
+import Aptos from "@/components/Aptos";
 
 export default {
   name: 'App',
   components: {
+    Aptos,
     // HelloWorld
-    StartWare
+    // StartWare
+    // Ether
   }
 }
 </script>

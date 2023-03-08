@@ -6,8 +6,10 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore -f json"
   },
   "dependencies": {
+    "@aptos-labs/wallet-adapter-core": "^1.0.1",
     "@argent/get-starknet": "^5.2.0",
     "core-js": "^3.6.5",
+    "echarts": "^5.4.0",
     "get-starknet": "^2.0.0",
     "starknet": "^4.17.1",
     "vue": "^3.0.0",

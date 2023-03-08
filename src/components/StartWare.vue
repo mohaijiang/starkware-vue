@@ -17,6 +17,12 @@
         <button @click="executeGet">get_balance</button>
         <button @click="executeSet">increase_balance</button>
       </div>
+
+      <div>
+        <form>
+          <input id="file" type="file" name="file" @change="changeFile"/>
+        </form>
+      </div>
     </div>
 </template>
 
@@ -30,7 +36,7 @@ import {onMounted, ref} from "vue";
 import {stark,number} from "starknet";
 
 const wallet = ref({})
-const contract = ref({})
+const contract = ref('')
 const contract_address = ref('0x72e5a285631a6b94afc0f78ce3161c884516e8204daecc05a423f1088076470')
 
 // contract_compiled.json classHash
@@ -103,11 +109,36 @@ const executeSet = async () => {
 
 const declare = async () => {
   const resp = await wallet.value.account.declare({
-    contract: ``,
+    contract: contract.value,
     classHash: classHash,
   })
 
   console.log(resp.transaction_hash)
+}
+
+const readFileAsString = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => {
+      if (reader.result) {
+        return resolve(reader.result?.toString())
+      }
+      return reject(new Error("Could not read file"))
+    }
+    reader.onerror = reject
+    reader.onabort = reject.bind(null, new Error("User aborted"))
+    reader.readAsText(file)
+  })
+}
+
+const changeFile = async (e) => {
+  if (e.target.files) {
+    const file = e.target.files[0]
+    const fileAsString = await readFileAsString(file)
+    console.log(fileAsString)
+
+    contract.value = fileAsString
+  }
 }
 
 //
