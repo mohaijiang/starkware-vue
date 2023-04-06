@@ -8,9 +8,13 @@
   "dependencies": {
     "@aptos-labs/wallet-adapter-core": "^1.0.1",
     "@argent/get-starknet": "^5.2.0",
+    "@mysten/sui.js": "^0.30.0",
+    "@mysten/wallet-adapter-base": "^0.7.0",
+    "@mysten/wallet-adapter-wallet-standard": "^0.7.0",
     "aptos": "^1.7.1",
     "core-js": "^3.6.5",
     "echarts": "^5.4.0",
+    "ethers": "^5.7.2",
     "get-starknet": "^2.0.0",
     "starknet": "^4.17.1",
     "typescript": "^4.9.5",
