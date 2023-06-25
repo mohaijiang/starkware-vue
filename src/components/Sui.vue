@@ -74,6 +74,7 @@ const provider = providers.get()[0]
 
 provider.connect().then(() => {
 
+  debugger
 }).catch(reject => {
   console.log(reject)
 })

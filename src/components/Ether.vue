@@ -6,12 +6,27 @@
   <div>
     <label>click:</label><button @click="call">call</button>
   </div>
+  <div>
+    <label>sign:</label><button @click="sign">sign</button>
+  </div>
+
+  <div>
+    <label>get balance: <button @click="getBalance"></button></label>
+  </div>
 </template>
 <script setup>
   import * as ethers from "ethers";
 
 
   const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+  provider.send("eth_requestAccounts", []).then(result => {
+    console.log(result)
+  })
+
+  provider.listAccounts().then(result=> {
+    console.log('addresses:',result)
+  })
 
   // const abi = [
   //   {
@@ -1751,6 +1766,69 @@
 
   }
 
+  const sign = async () => {
+    const signer = provider.getSigner()
+    const result = await signer.signMessage("abcd")
+    console.log(result)
+  }
+
+
+  const checkNetwork = async (targetNetworkId) => {
+    if (window.ethereum) {
+      const currentChainId = await window.ethereum.request({
+        method: 'eth_chainId',
+      });
+
+      // return true if network id is the same
+      if (currentChainId == targetNetworkId) return true;
+      // return false is network id is different
+      return false;
+    }
+  };
+
+  // switches network to the one provided
+  const switchNetwork = async ( targetNetworkId) => {
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: targetNetworkId }],
+    });
+    // refresh
+    window.location.reload();
+  };
+
+
+  window.onfocus = async () => {
+    console.info("focus")
+    const networkId = '0x1'
+    if (! await checkNetwork(networkId)){
+      console.log('not mainnet')
+      try {
+        const accounts = await provider.listAccounts()
+        console.log(accounts)
+        await switchNetwork(networkId)
+      } catch (e) {
+        await window.ethereum.request({
+          method: "wallet_requestPermissions",
+          params: [
+            {
+              eth_accounts: {}
+            }
+          ]
+        });
+      }
+    }else {
+      console.log('mainnet ')
+    }
+  }
+
+  window.onblur = () => {
+  }
+
+
+  const getBalance = () => {
+    console.log('get balance')
+
+  }
 </script>
 
 
