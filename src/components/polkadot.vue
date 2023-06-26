@@ -6,7 +6,8 @@
   const allAccounts = await web3Accounts();
   console.log(allAccounts)
   const SENDER = '5Cta923XaZyEpXvG2dqpexSGtnFDqPbJdos84m9nB7NAkCsS'
-  const wsProvider = new WsProvider('ws://127.0.0.1:9944');
+  // const wsProvider = new WsProvider('ws://127.0.0.1:9944');
+  const wsProvider = new WsProvider('wss://ws.aishow.hamsternet.io');
   const api = await ApiPromise.create({provider: wsProvider});
   console.log(api)
 
@@ -142,6 +143,11 @@
           }
       });
   }
+
+  const nftCollectionList = async () => {
+      const result = await api.query.nfts.collection(0)
+      console.log(result.toHuman())
+  }
 </script>
 
 <template>
@@ -161,7 +167,7 @@
               <li><label>NFT mint</label><button @click="mint">mint</button></li>
               <li><label>模型列表：<button @click="modelList">modelList</button></label></li>
               <li><label>post 列表： <button @click="postList">postList</button></label></li>
-              <li><label>nft列表：</label></li>
+              <li><label>nft列表：<button @click="nftCollectionList">nftCollectionList</button></label></li>
           </ul>
       </div>
   </div>
