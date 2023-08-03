@@ -6,8 +6,8 @@
   const allAccounts = await web3Accounts();
   console.log(allAccounts)
   const SENDER = '5Cta923XaZyEpXvG2dqpexSGtnFDqPbJdos84m9nB7NAkCsS'
-  // const wsProvider = new WsProvider('ws://127.0.0.1:9944');
-  const wsProvider = new WsProvider('wss://ws.aishow.hamsternet.io');
+  const wsProvider = new WsProvider('ws://127.0.0.1:9944');
+  // const wsProvider = new WsProvider('wss://ws.aishow.hamsternet.io');
   const api = await ApiPromise.create({provider: wsProvider});
   console.log(api)
 
@@ -145,8 +145,10 @@
   }
 
   const nftCollectionList = async () => {
-      const result = await api.query.nfts.collection(0)
-      console.log(result.toHuman())
+      const result = await api.query.nfts.collection.entries()
+      for(let item of result){
+          console.log(item)
+      }
   }
 </script>
 

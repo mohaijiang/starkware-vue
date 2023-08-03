@@ -3,19 +3,19 @@
 <!--  <HelloWorld msg="Welcome to Your Vue.js App"/>-->
 <!--  <StartWare />-->
 <!--  <Ether/>-->
-<!--    <Aptos/>-->
+    <Aptos/>
 <!--  <Sui/>-->
 <!--    <Web3OnboardExample/>-->
-    <suspense>
-        <polkadot/>
-    </suspense>
+<!--    <suspense>-->
+<!--        <polkadot/>-->
+<!--    </suspense>-->
 </template>
 
 <script setup>
 // import HelloWorld from './components/HelloWorld.vue'
-import StartWare from "@/components/StartWare";
-import Ether from "@/components/Ether"
-// import Aptos from "@/components/Aptos";
+// import StartWare from "@/components/StartWare";
+// import Ether from "@/components/Ether"
+import Aptos from "@/components/Aptos";
 // import Sui from "@/components/Sui.vue";
 // import Web3OnboardExample from "@/components/web3-onboard-example.vue";
 import Polkadot from "@/components/polkadot.vue";
